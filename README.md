@@ -17,14 +17,14 @@ To build up Bagpipe, first you should pull Docker image which contains the older
 To run this image:
     
     docker run --name new_bagpipe --entrypoint /bin/bash -ti konne/bagpipe
-Then you will get into a container which has the older version of Bagpipe but it is not what we you might want to use. 
+Then you will get into a container which has the older version of Bagpipe but it might not be what you want. 
 If it is the case, you should compile this newer version of Bagpipe in the docker container. To do that:
 
 First archive the older version:
 
-mv /bagpipe /old_bagpipe
-git clone https://github.com/uwplse/bagpipe
-cd /bagpipe
+    mv /bagpipe /old_bagpipe
+    git clone https://github.com/uwplse/bagpipe
+    cd /bagpipe
 
 There are 3 things you need to take care of in order to compile the new Bagpipe. First, it relies on Space-Search which 
 is not installed in the container by default. In order to satisfy the dependency, you need to install Space-Search using OPAM:
