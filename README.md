@@ -10,17 +10,56 @@ implement this policy.
 This README provides a quick start guide for Bagpipe, a more in depth discussion
 can be found [here](http://konne.me/bagpipe).
 
-Checkout Bagpipe from github:
+To build up Bagpipe, first you should pull Docker image which contains the older version of Bagpipe using
 
-    git clone --recursive git@github.com:uwplse/bagpipe.git
- 
-[Docker][docker] is the most reliable way to build Bagpipe. To build
-Bagpipe and all its dependencies run (running this command for the first
-time may take an hour) in the `bagpipe` directory:
+    docker pull konne/bagpipe
 
-    docker build -t bagpipe .
+To run this image:
+    
+    docker run --name new_bagpipe --entrypoint /bin/bash -ti konne/bagpipe
+Then you will get into a container which has the older version of Bagpipe but it is not what we you might want to use. 
+If it is the case, you should compile this newer version of Bagpipe in the docker container. To do that:
 
-[docker]: https://docs.docker.com/engine/installation/
+First archive the older version:
+
+mv /bagpipe /old_bagpipe
+git clone https://github.com/uwplse/bagpipe
+cd /bagpipe
+
+There are 3 things you need to take care of in order to compile the new Bagpipe. First, it relies on Space-Search which 
+is not installed in the container by default. In order to satisfy the dependency, you need to install Space-Search using OPAM:
+
+    wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin && \
+    opam init -n --comp=4.01.0
+
+    opam install coq.8.5.2
+    opam update && opam install space-search.0.9.1
+    
+    export PATH=/root/.opam/4.01.0/bin:$PATH
+
+Second, you need to reinstall racket because the current version in the container does not satisfy the dependency of the newer Bagpipe:
+
+    wget http://mirror.racket-lang.org/installers/6.6/racket-6.6-x86_64-linux.sh -O install.sh && \
+    chmod +x install.sh && \
+    ./install.sh --in-place --create-links /usr --dest /usr/racket && \
+    rm install.sh
+
+Last, you need to reinstall rosette:
+
+    cd /
+    cd rosette && \
+    sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
+    raco pkg remove rosette && \
+    raco pkg install
+
+After doing the above, you should be able to compile the newer bagpipe by running:
+
+    make -C /bagpipe
+
+Last but not least, if you want to newer Bagpipe to be the default choice, you should add the path:
+    
+    export PATH=/bagpipe/src/bagpipe/python/:$PATH
+
 
 ### Developing Bagpipe
 
