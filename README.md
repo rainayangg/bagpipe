@@ -47,8 +47,10 @@ Second, you need to reinstall racket because the current version in the containe
 
 Last, you need to reinstall rosette:
 
-    cd /
-    cd rosette && \
+    git clone https://github.com/emina/rosette.git && \
+    cd rosette; git checkout 2.2 && \
+                raco pkg install
+
     sed -i "s/;(fprintf/(fprintf/g" rosette/solver/smt/smtlib2.rkt && \
     raco pkg remove rosette && \
     raco pkg install
