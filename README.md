@@ -31,7 +31,7 @@ is not installed in the container by default. In order to satisfy the dependency
 
     wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin && \
     opam init -n --comp=4.01.0
-
+    sudo apt install unzip
     opam install coq.8.5.2
     opam update && opam install space-search.0.9.1
     
