@@ -29,9 +29,10 @@ First archive the older version:
 There are 3 things you need to take care of in order to compile the new Bagpipe. First, it relies on Space-Search which 
 is not installed in the container by default. In order to satisfy the dependency, you need to install Space-Search using OPAM:
 
-    wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin && \
-    opam init -n --comp=4.01.0
+    wget https://raw.github.com/ocaml/opam/master/shell/opam_installer.sh -O - | sh -s /usr/local/bin
     sudo apt install unzip
+    
+    opam init -n --comp=4.01.0
     opam install coq.8.5.2
     opam update && opam install space-search.0.9.1
     
